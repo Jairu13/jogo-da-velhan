@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>jogo-da-velha</title>
+        <style>
+            * {
+                margin: 10px auto;
+                text-align: center;
+            }
+            body{
+                background: linear-gradient(
+                120deg,
+                    rgb(31, 229, 255),
+                    rgb(5, 44, 128),
+                    rgb(0, 235, 215)
+                    );
+                background-size:100% 500%;
+                background-position:30% 50% ;
+                min-height: 100hv;
+            }
+            
+            td {
+                background-color:rgb(0, 225, 255);
+                width: 100px;
+                height: 100px;
+                font-size: 40px;
+                border-radius: 10px;
+
+            }
+            button{
+                border-radius: 9px;
+                font-size: 50px;
+                background-color: rgba(255, 219, 18, 0);
+            }
+            
+        </style>
+    </head>
+
+    <body>
+        <table>
+            <tr> 
+                <td id="td1" onclick="add(this)"></td>
+
+                <td id="td2" onclick="add(this)"></td>
+
+                <td id="td3" onclick="add(this)"></td>
+            </tr>
+
+            <tr>
+                <td id="td4" onclick="add(this)"></td>
+
+                <td id="td5" onclick="add(this)"></td>
+
+                <td id="td6" onclick="add(this)"></td>
+            </tr>
+
+            <tr>
+                <td id="td7" onclick="add(this)"></td>
+
+                <td id="td8" onclick="add(this)"></td>
+
+                <td id="td9" onclick="add(this)"></td>
+            </tr>
+        </table>
+        <button onclick="reiniciar()">Reiniciar</button>
+    </body>
+    <script>
+        var text = "x"
+        function add(batats) {
+            if(batats.innerText === ""){
+            batats.innerText = text;
+            text = text === "x" ? "o" : "x";
+            
+            }
+        }
+        function reiniciar(){
+            var td = document.querySelectorAll("td");
+            td.forEach(terem => {
+                terem.innerText = ""
+            });
+        }
+    </script>
+
+    </html>
