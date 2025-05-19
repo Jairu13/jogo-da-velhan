@@ -35,6 +35,8 @@
             font-size: 40px;
             border-radius: 11px;
             -webkit-text-fill-color: rgb(5, 5, 49);
+            outline: none;       /* remove a borda de foco */
+  user-select: none;   /* impede o texto de ser selecionado */
 
         }
 
@@ -56,6 +58,8 @@
             <td id="td3" onclick="add(this)"></td>
         </tr>
 
+
+
         <tr>
             <td id="td4" onclick="add(this)"></td>
 
@@ -63,6 +67,8 @@
 
             <td id="td6" onclick="add(this)"></td>
         </tr>
+
+
 
         <tr>
             <td id="td7" onclick="add(this)"></td>
@@ -88,6 +94,7 @@
         td.forEach(terem => {
             terem.innerText = ""
         });
+        text = "X"
     }
 </script>
 
