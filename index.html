@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
     
@@ -12,8 +13,6 @@
     <style>
         * {
             font-family: "Comic Relief", system-ui;
-  font-weight: 400;
-  font-style: normal;
             margin: 10px auto;
             text-align: center;
         }
@@ -25,7 +24,7 @@
                     rgb(0, 235, 215));
             background-size: 100% 500%;
             background-position: 30% 50%;
-            min-height: 100hv;
+            min-height: 100vh;
         }
 
         td {
@@ -35,27 +34,41 @@
             font-size: 40px;
             border-radius: 11px;
             -webkit-text-fill-color: rgb(5, 5, 49);
-            outline: none;       /* remove a borda de foco */
-            user-select: none;   /* impede o texto de ser selecionado */
+            outline: none;
+            user-select: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
 
+        td.vencedor {
+            background-color: rgba(105, 255, 45, 0.349) !important;
+            color: black !important;
+            font-weight: bold;
+            animation: piscar 0.6s infinite alternate;
+        }
+
+        @keyframes piscar {
+            from { background-color: rgba(48, 255, 41, 0.384); }
+            to { background-color: rgba(91, 255, 59, 0.384); }
         }
 
         button {
             border-radius: 9px;
-            font-size: 50px;
+            font-size: 30px;
             background-color: rgba(0, 12, 82, 0.288);
-            outline: none;       /* remove a borda de foco */
-            user-select: none;   /* impede o texto de ser selecionado */
             border: 2px solid black;
-
+            cursor: pointer;
         }
-        button:hover{
-            border-radius: 9px;
-            font-size: 50px;
-            background-color: rgba(255, 0, 191, 0);
-            outline: none;       /* remove a borda de foco */
-            user-select: none;   /* impede o texto de ser selecionado */
+        button:hover {
+            background-color: rgba(0, 47, 255, 0.2);
+        }
 
+        #resultado {
+            margin-top: 20px;
+            font-size: 30px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 3px black;
         }
     </style>
 </head>
@@ -64,50 +77,81 @@
     <table>
         <tr>
             <td id="td1" onclick="add(this)"></td>
-
             <td id="td2" onclick="add(this)"></td>
-
             <td id="td3" onclick="add(this)"></td>
         </tr>
-
-
-
         <tr>
             <td id="td4" onclick="add(this)"></td>
-
             <td id="td5" onclick="add(this)"></td>
-
             <td id="td6" onclick="add(this)"></td>
         </tr>
-
-
-
         <tr>
             <td id="td7" onclick="add(this)"></td>
-
             <td id="td8" onclick="add(this)"></td>
-
             <td id="td9" onclick="add(this)"></td>
         </tr>
     </table>
+
     <button onclick="reiniciar()">Reiniciar</button>
-</body>
-<script>
-    var text = "X"
-    function add(batats) {
-        if (batats.innerText === "") {
-            batats.innerText = text;
-            text = text === "X" ? "O" : "X";
+    <div id="resultado"></div>
 
+    <script>
+        var text = "X";
+        var fim = false;
+
+        function add(casa) {
+            if (fim) return; // se já acabou, não deixa jogar
+            if (casa.innerText === "") {
+                casa.innerText = text;
+                let vencedor = verificarVencedor();
+                if (vencedor) {
+                    document.getElementById("resultado").innerText = text + " venceu!";
+                    vencedor.forEach(id => document.getElementById("td" + id).classList.add("vencedor"));
+                    fim = true;
+                } else if (deuVelha()) {
+                    document.getElementById("resultado").innerText = "Deu velha!";
+                    fim = true;
+                } else {
+                    text = text === "X" ? "O" : "X";
+                }
+            }
         }
-    }
-    function reiniciar() {
-        var td = document.querySelectorAll("td");
-        td.forEach(terem => {
-            terem.innerText = ""
-        });
-        text = "X"
-    }
-</script>
 
+        function reiniciar() {
+            var td = document.querySelectorAll("td");
+            td.forEach(c => {
+                c.innerText = "";
+                c.classList.remove("vencedor");
+            });
+            text = "X";
+            fim = false;
+            document.getElementById("resultado").innerText = "";
+        }
+
+        function verificarVencedor() {
+            var td = [];
+            for (let i = 1; i <= 9; i++) {
+                td[i] = document.getElementById("td" + i).innerText;
+            }
+
+            var combinacoes = [
+                [1,2,3],[4,5,6],[7,8,9], // linhas
+                [1,4,7],[2,5,8],[3,6,9], // colunas
+                [1,5,9],[3,5,7]          // diagonais
+            ];
+
+            for (let c of combinacoes) {
+                if (td[c[0]] !== "" && td[c[0]] === td[c[1]] && td[c[1]] === td[c[2]]) {
+                    return c; // retorna as casas vencedoras
+                }
+            }
+            return null;
+        }
+
+        function deuVelha() {
+            var td = document.querySelectorAll("td");
+            return [...td].every(c => c.innerText !== "");
+        }
+    </script>
+</body>
 </html>
